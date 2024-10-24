@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: Crypto Recommendation Service
+  description: ''
+  version: 1.0.0
+paths:
+  /cryptos/normalized-range:
+    $ref: 'crypto-recommendation-paths.yaml#/operations/get-normalized-range'
+  /cryptos/stats/{symbol}:
+    $ref: 'crypto-recommendation-paths.yaml#/operations/get-crypto-stats'
+  /cryptos/highest-normalized-range/{date}:
+    $ref: 'crypto-recommendation-paths.yaml#/operations/get-highest-normalized-range'

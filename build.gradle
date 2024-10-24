@@ -1,0 +1,106 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.openapi.generator' version '5.4.0'
+}
+
+group = 'com.xm'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+	archivesBaseName = 'crypto-recommendation-service'
+	archiveVersion = version
+	manifest {
+		attributes 'Main-Class': 'com.xm.crypto.recommendation.Application' // Specify your main class here
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'javax.servlet:javax.servlet-api:4.0.1'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
+	implementation 'javax.annotation:javax.annotation-api:1.3.2'
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+	implementation 'org.springdoc:springdoc-openapi-common:1.6.14'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+	implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.14'
+	implementation 'com.opencsv:opencsv:5.5.2'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java.srcDirs = ["$buildDir/generated/src/main/java", "$projectDir/src/main/java"]
+	}
+}
+
+openApiGenerate {
+	generatorName = "spring"
+	inputSpec = "$rootDir/src/main/resources/openapi/crypto-recommendation-apis.yaml"
+	outputDir = "$buildDir/generated"
+	apiPackage = "com.xm.crypto.recommendation.api"
+	modelPackage = "com.xm.crypto.recommendation.dto"
+	modelNameSuffix = 'Dto' // Optional: Suffix to add to generated model class names
+	configOptions = [
+			interfaceOnly: 'false',  // Ensure that only interfaces are generated
+			dateLibrary: 'java8',  // Use Java 8 date library
+			generateApis: 'true',  // Generate APIs
+			generateModels: 'true',  // Generate DTOs (models)
+			useTags: 'true',  // Tag-based API generation (optional)
+			swaggerAnnotations: 'true',
+			useSpringController: 'true',
+			delegatePattern: 'true',
+			annotationLibrary: 'swagger2',
+			generateSupportingFiles: 'false',  // Disable generation of supporting files (including the main class)
+			generateOpenApiGeneratorApplication: 'false'
+	]
+	globalProperties = [
+			modelDocs: "false",
+			apis: '',
+			models: '',
+			supportingFiles: 'ApiUtil.java'
+	]
+}
+
+
+tasks.register('generateApi') {
+	dependsOn tasks.named('openApiGenerate')
+	doLast {
+		println "API generation complete"
+	}
+}
+
+tasks.named('compileJava') {
+	dependsOn tasks.named('generateApi')  // Ensure DTOs and APIs are generated before compiling Java
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir "$buildDir/generated/src/main/java"  // Add generated sources to the Java source set
+		}
+	}
+}

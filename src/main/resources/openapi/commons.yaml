@@ -1,0 +1,44 @@
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        errorType:
+          type: string
+        errorMessage:
+          type: string
+      required:
+        - errorType
+        - errorMessage
+
+errors:
+  invalid-input:
+    description: Invalid input
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Error'
+  not-authorized:
+    description: Authorization denied
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Error'
+  forbidden:
+    description: Forbidden
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Error'
+  internal-server-error:
+    description: Unexpected Internal Server Error
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Error'
+  not-found:
+    description: Resource Not Found
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Error'

@@ -1,0 +1,100 @@
+operations:
+  get-normalized-range:
+    get:
+      tags:
+        - crypto-recommendation
+      summary: Get a descending sorted list of all cryptocurrencies by normalized range
+      description: Returns a descending sorted list of all the cryptocurrencies based on their normalized range ((max-min)/min).
+      operationId: getCryptoSortedByNormalizedRange
+      responses:
+        '200':
+          description: A sorted list of cryptos with their normalized range values.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'crypto-recommendation-schema.yaml#/components/schemas/CryptoNormalizedRange'
+        '500':
+          $ref: 'commons.yaml#/errors/internal-server-error'
+        '400':
+          $ref: 'commons.yaml#/errors/invalid-input'
+        '401':
+          $ref: 'commons.yaml#/errors/not-authorized'
+        '403':
+          $ref: 'commons.yaml#/errors/forbidden'
+
+  get-crypto-stats:
+    get:
+      tags:
+        - crypto-recommendation
+      summary: Get oldest, newest, min, and max values for a cryptocurrency within a specific time range
+      description: Returns the oldest, newest, min, and max values for the requested cryptocurrency within the specified time range.
+      operationId: getCryptoStats
+      parameters:
+        - in: path
+          name: symbol
+          required: true
+          schema:
+            type: string
+          description: The symbol of the cryptocurrency (e.g., BTC).
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+          description: 'The start date for the data range (optional). Example: 2023-01-01.'
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+          description: 'The end date for the data range (optional). Example: 2023-06-30.'
+      responses:
+        '200':
+          description: 'Statistical data (oldest, newest, min, max) for the requested crypto within the time range.'
+          content:
+            application/json:
+              schema:
+                $ref: 'crypto-recommendation-schema.yaml#/components/schemas/CryptoStats'
+        '500':
+          $ref: 'commons.yaml#/errors/internal-server-error'
+        '400':
+          $ref: 'commons.yaml#/errors/invalid-input'
+        '401':
+          $ref: 'commons.yaml#/errors/not-authorized'
+        '403':
+          $ref: 'commons.yaml#/errors/forbidden'
+
+
+  get-highest-normalized-range:
+    get:
+      tags:
+        - crypto-recommendation
+      summary: Get the cryptocurrency with the highest normalized range on a specific day
+      description: Returns the cryptocurrency with the highest normalized range ((max-min)/min) for a specific day.
+      operationId: getHighestNormalizedRange
+      parameters:
+        - in: path
+          name: date
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{2}-\d{2}$'
+          description: The date for which to get the crypto with the highest normalized range.
+      responses:
+        '200':
+          description: The cryptocurrency with the highest normalized range for the requested date.
+          content:
+            application/json:
+              schema:
+                $ref: 'crypto-recommendation-schema.yaml#/components/schemas/CryptoHighestNormalizedRange'
+        '500':
+          $ref: 'commons.yaml#/errors/internal-server-error'
+        '400':
+          $ref: 'commons.yaml#/errors/invalid-input'
+        '401':
+          $ref: 'commons.yaml#/errors/not-authorized'
+        '403':
+          $ref: 'commons.yaml#/errors/forbidden'
+

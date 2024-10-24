@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: crypto.recommendation
+  main:
+    main-class: com.xm.crypto.recommendation.Application
+  mvc:
+    static-path-pattern: /static/**0
+server:
+  port: 8080
+csv:
+  file-name-pattern: ^([A-Za-z]+)_values\.csv$
+  dir: src/main/resources/csv
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+task:
+  execution:
+    pool:
+      core-size: 2
+      max-size: 10
+      queue-capacity: 10

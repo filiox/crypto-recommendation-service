@@ -1,0 +1,37 @@
+components:
+  schemas:
+    CryptoNormalizedRange:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The symbol of the cryptocurrency (e.g., BTC).
+        normalizedRange:
+          type: number
+          description: The normalized range value calculated as (max-min)/min.
+
+    CryptoStats:
+      type: object
+      properties:
+        oldest:
+          type: number
+          description: The price at the oldest record.
+        newest:
+          type: number
+          description: The price at the newest record.
+        min:
+          type: number
+          description: The minimum price recorded.
+        max:
+          type: number
+          description: The maximum price recorded.
+
+    CryptoHighestNormalizedRange:
+      type: object
+      properties:
+        symbol:
+          type: string
+          description: The symbol of the cryptocurrency with the highest normalized range.
+        normalizedRange:
+          type: number
+          description: The highest normalized range value.
