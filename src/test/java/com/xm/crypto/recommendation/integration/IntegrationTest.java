@@ -18,7 +18,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getNormalizedRange_for_all_cryptos() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/normalized-range"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/sorted-by-normalized-range"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$[?(@.symbol == 'ETH')].normalizedRange").value(0.64))
 				.andExpect(MockMvcResultMatchers.jsonPath("$[?(@.symbol == 'XRP')].normalizedRange").value(0.5061))
@@ -29,7 +29,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.min").value("33276.59"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.max").value("47722.66"))
@@ -39,7 +39,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC_for_date_range() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC?startDate=2022-01-01&endDate=2022-03-01"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats?startDate=2022-01-01&endDate=2022-03-01"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.min").value("33276.59"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.max").value("47722.66"))
@@ -49,7 +49,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC_for_date_missing_endDate() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC?startDate=2022-01-01&endDate="))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats?startDate=2022-01-01&endDate="))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Bad Request"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("A valid time range needs to be provided!"));
@@ -57,7 +57,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC_for_date_invalid_date_range() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC?startDate=2022-03-01&endDate=2022-01-01"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats?startDate=2022-03-01&endDate=2022-01-01"))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Bad Request"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("Start date must be before end date!"));
@@ -65,7 +65,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC_for_date_invalid_format() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC?startDate=2022-01-01&endDate=202255-03-01"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats?startDate=2022-01-01&endDate=202255-03-01"))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Bad Request"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("Invalid date format. Please use yyyy-MM-dd."));
@@ -73,7 +73,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_BTC_for_date_missing_startDate() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTC?endDate=2022-01-01"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTC/stats?endDate=2022-01-01"))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Bad Request"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("A valid time range needs to be provided!"));
@@ -81,7 +81,7 @@ class IntegrationTest {
 
 	@Test
 	void test_getCryptoStats_for_invalid_symbol() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/stats/BTCC"))
+		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTCC/stats"))
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Not Found"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("No data found for symbol: BTCC"));

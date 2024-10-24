@@ -1,5 +1,5 @@
 operations:
-  get-normalized-range:
+  get-sorted-by-normalized-range:
     get:
       tags:
         - crypto-recommendation
@@ -65,7 +65,6 @@ operations:
           $ref: 'commons.yaml#/errors/not-authorized'
         '403':
           $ref: 'commons.yaml#/errors/forbidden'
-
 
   get-highest-normalized-range:
     get:

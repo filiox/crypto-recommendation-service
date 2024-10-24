@@ -1,7 +1,7 @@
 package com.xm.crypto.recommendation.controller.delegate;
 
 import com.xm.crypto.recommendation.api.CryptoRecommendationApiDelegate;
-import com.xm.crypto.recommendation.controller.command.GetCryptoSortedByNormalizedRangeCommand;
+import com.xm.crypto.recommendation.controller.command.GetSortedByNormalizedRangeCommand;
 import com.xm.crypto.recommendation.controller.command.GetCryptoStatsCommand;
 import com.xm.crypto.recommendation.controller.command.GetHighestNormalizedRangeCommand;
 import com.xm.crypto.recommendation.dto.CryptoHighestNormalizedRangeDto;
@@ -16,12 +16,12 @@ public class CryptoRecommendationDelegate implements CryptoRecommendationApiDele
 
     private final GetHighestNormalizedRangeCommand getHighestNormalizedRangeCommand;
     private final GetCryptoStatsCommand getCryptoStatsCommand;
-    private final GetCryptoSortedByNormalizedRangeCommand getCryptoSortedByNormalizedRangeCommand;
+    private final GetSortedByNormalizedRangeCommand getSortedByNormalizedRangeCommand;
 
-    public CryptoRecommendationDelegate(GetHighestNormalizedRangeCommand getHighestNormalizedRangeCommand, GetCryptoStatsCommand getCryptoStatsCommand, GetCryptoSortedByNormalizedRangeCommand getCryptoSortedByNormalizedRangeCommand) {
+    public CryptoRecommendationDelegate(GetHighestNormalizedRangeCommand getHighestNormalizedRangeCommand, GetCryptoStatsCommand getCryptoStatsCommand, GetSortedByNormalizedRangeCommand getSortedByNormalizedRangeCommand) {
         this.getHighestNormalizedRangeCommand = getHighestNormalizedRangeCommand;
         this.getCryptoStatsCommand = getCryptoStatsCommand;
-        this.getCryptoSortedByNormalizedRangeCommand = getCryptoSortedByNormalizedRangeCommand;
+        this.getSortedByNormalizedRangeCommand = getSortedByNormalizedRangeCommand;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CryptoRecommendationDelegate implements CryptoRecommendationApiDele
 
     @Override
     public ResponseEntity<List<CryptoNormalizedRangeDto>> getCryptoSortedByNormalizedRange(){
-        return ResponseEntity.ok(getCryptoSortedByNormalizedRangeCommand.execute(Request.builder()
+        return ResponseEntity.ok(getSortedByNormalizedRangeCommand.execute(Request.builder()
                 .build()));
     }
 

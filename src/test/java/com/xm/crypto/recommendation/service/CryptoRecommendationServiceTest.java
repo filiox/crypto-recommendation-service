@@ -7,9 +7,7 @@ import com.xm.crypto.recommendation.model.CryptoStats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -82,7 +80,7 @@ class CryptoRecommendationServiceTest {
 
     @Test
     void getSortedByNormalizedRangedForAllCryptos_shouldReturnSortedCryptos() {
-        List<CryptoNormalizedRange> sortedRanges = cryptoRecommendationService.getSortedByNormalizedRangedForAllCryptos();
+        List<CryptoNormalizedRange> sortedRanges = cryptoRecommendationService.getSortedByNormalizedRange();
 
         assertThat(sortedRanges)
                 .isNotEmpty()
@@ -96,7 +94,7 @@ class CryptoRecommendationServiceTest {
 
     @Test
     void getCryptoHighestNormalizedRangeForDate_shouldReturnHighestNormalizedRange() {
-        CryptoNormalizedRange highestNormalizedRange = cryptoRecommendationService.getCryptoHighestNormalizedRangeForDate(LocalDate.of(2022, 1, 1));
+        CryptoNormalizedRange highestNormalizedRange = cryptoRecommendationService.getHighestNormalizedRangeForDate(LocalDate.of(2022, 1, 1));
 
         assertThat(highestNormalizedRange).isNotNull();
         assertThat(highestNormalizedRange.getSymbol()).isEqualTo("ETH");
@@ -105,7 +103,7 @@ class CryptoRecommendationServiceTest {
 
     @Test
     void getCryptoHighestNormalizedRangeForDate_shouldThrowExceptionWhenNoDataForDate() {
-        assertThatThrownBy(() -> cryptoRecommendationService.getCryptoHighestNormalizedRangeForDate(LocalDate.of(2025, 1, 1)))
+        assertThatThrownBy(() -> cryptoRecommendationService.getHighestNormalizedRangeForDate(LocalDate.of(2025, 1, 1)))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("No cryptocurrencies found with valid data for the date");
     }

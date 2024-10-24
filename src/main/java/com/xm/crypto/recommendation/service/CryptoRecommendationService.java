@@ -7,7 +7,6 @@ import com.xm.crypto.recommendation.model.CryptoStats;
 import com.xm.crypto.recommendation.model.DateRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -80,7 +79,7 @@ public class CryptoRecommendationService {
         return getCryptoStats(cryptoInfo);
     }
 
-    public List<CryptoNormalizedRange> getSortedByNormalizedRangedForAllCryptos() {
+    public List<CryptoNormalizedRange> getSortedByNormalizedRange() {
         logger.info("Getting normalized range sorted in descending order...");
         return cryptoData.keySet().stream()
                 .map(symbol -> new CryptoNormalizedRange(symbol, getNormalizedRangeForSymbol(symbol)))
@@ -88,7 +87,7 @@ public class CryptoRecommendationService {
                 .collect(Collectors.toList());
     }
 
-    public CryptoNormalizedRange getCryptoHighestNormalizedRangeForDate(LocalDate targetDate) {
+    public CryptoNormalizedRange getHighestNormalizedRangeForDate(LocalDate targetDate) {
         logger.info("Retrieving highest normalized range for date: {}", targetDate);
         return getAllCryptoInfoForDate(targetDate).entrySet().stream()
                 .filter(entry -> !entry.getValue().isEmpty())

@@ -9,7 +9,7 @@ server:
   port: 8080
 csv:
   file-name-pattern: ^([A-Za-z]+)_values\.csv$
-  dir: src/main/resources/csv
+  dir: csv
 springdoc:
   api-docs:
     path: /v3/api-docs

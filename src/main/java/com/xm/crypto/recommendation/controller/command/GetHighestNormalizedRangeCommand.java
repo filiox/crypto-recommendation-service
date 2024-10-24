@@ -23,7 +23,7 @@ public class GetHighestNormalizedRangeCommand implements Command<Request, Crypto
     public CryptoHighestNormalizedRangeDto execute(Request request) {
         logger.info("Getting highest normalized range for date: {}...", request.getForDate());
         LocalDate targetDate = DateUtils.getDatefromString(request.getForDate());
-        CryptoHighestNormalizedRangeDto result = toDto(cryptoRecommendationService.getCryptoHighestNormalizedRangeForDate(targetDate));
+        CryptoHighestNormalizedRangeDto result = toDto(cryptoRecommendationService.getHighestNormalizedRangeForDate(targetDate));
         logger.info("Successfully retrieved highest normalized range for date: {}", request.getForDate());
         return result;
     }

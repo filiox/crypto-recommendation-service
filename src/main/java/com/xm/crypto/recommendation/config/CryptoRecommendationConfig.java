@@ -1,6 +1,6 @@
 package com.xm.crypto.recommendation.config;
 
-import com.xm.crypto.recommendation.controller.command.GetCryptoSortedByNormalizedRangeCommand;
+import com.xm.crypto.recommendation.controller.command.GetSortedByNormalizedRangeCommand;
 import com.xm.crypto.recommendation.controller.command.GetCryptoStatsCommand;
 import com.xm.crypto.recommendation.controller.command.GetHighestNormalizedRangeCommand;
 import com.xm.crypto.recommendation.controller.delegate.CryptoRecommendationDelegate;
@@ -25,8 +25,8 @@ public class CryptoRecommendationConfig {
     }
 
     @Bean
-    public GetCryptoSortedByNormalizedRangeCommand getCryptoSortedByNormalizedRangeCommand(CryptoRecommendationService cryptoRecommendationService) {
-        return new GetCryptoSortedByNormalizedRangeCommand(cryptoRecommendationService);
+    public GetSortedByNormalizedRangeCommand getCryptoSortedByNormalizedRangeCommand(CryptoRecommendationService cryptoRecommendationService) {
+        return new GetSortedByNormalizedRangeCommand(cryptoRecommendationService);
     }
 
     @Bean
@@ -40,9 +40,9 @@ public class CryptoRecommendationConfig {
     }
 
     @Bean
-    public CryptoRecommendationDelegate cryptoRecommendationDelegate(GetCryptoSortedByNormalizedRangeCommand getCryptoSortedByNormalizedRangeCommand,
+    public CryptoRecommendationDelegate cryptoRecommendationDelegate(GetSortedByNormalizedRangeCommand getSortedByNormalizedRangeCommand,
                                                                      GetCryptoStatsCommand getCryptoStatsCommand,
                                                                      GetHighestNormalizedRangeCommand getHighestNormalizedRangeCommand) {
-        return new CryptoRecommendationDelegate(getHighestNormalizedRangeCommand, getCryptoStatsCommand, getCryptoSortedByNormalizedRangeCommand);
+        return new CryptoRecommendationDelegate(getHighestNormalizedRangeCommand, getCryptoStatsCommand, getSortedByNormalizedRangeCommand);
     }
 }

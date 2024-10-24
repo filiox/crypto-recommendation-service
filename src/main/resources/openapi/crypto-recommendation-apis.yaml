@@ -4,9 +4,9 @@ info:
   description: ''
   version: 1.0.0
 paths:
-  /cryptos/normalized-range:
-    $ref: 'crypto-recommendation-paths.yaml#/operations/get-normalized-range'
-  /cryptos/stats/{symbol}:
+  /cryptos/sorted-by-normalized-range:
+    $ref: 'crypto-recommendation-paths.yaml#/operations/get-sorted-by-normalized-range'
+  /cryptos/{symbol}/stats:
     $ref: 'crypto-recommendation-paths.yaml#/operations/get-crypto-stats'
   /cryptos/highest-normalized-range/{date}:
     $ref: 'crypto-recommendation-paths.yaml#/operations/get-highest-normalized-range'

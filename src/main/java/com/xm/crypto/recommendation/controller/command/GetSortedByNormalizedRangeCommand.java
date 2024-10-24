@@ -10,19 +10,20 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GetCryptoSortedByNormalizedRangeCommand implements Command<Request, List<CryptoNormalizedRangeDto>> {
+public class GetSortedByNormalizedRangeCommand implements Command<Request, List<CryptoNormalizedRangeDto>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetCryptoSortedByNormalizedRangeCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetSortedByNormalizedRangeCommand.class);
+
     private final CryptoRecommendationService cryptoRecommendationService;
 
-    public GetCryptoSortedByNormalizedRangeCommand(CryptoRecommendationService cryptoRecommendationService) {
+    public GetSortedByNormalizedRangeCommand(CryptoRecommendationService cryptoRecommendationService) {
         this.cryptoRecommendationService = cryptoRecommendationService;
     }
 
     @Override
     public List<CryptoNormalizedRangeDto> execute(Request requestDto) {
         logger.info("Getting normalized range for each crypto in descending order.");
-        List<CryptoNormalizedRangeDto> result = cryptoRecommendationService.getSortedByNormalizedRangedForAllCryptos()
+        List<CryptoNormalizedRangeDto> result = cryptoRecommendationService.getSortedByNormalizedRange()
                 .stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
