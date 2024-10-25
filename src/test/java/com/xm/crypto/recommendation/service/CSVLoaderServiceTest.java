@@ -6,8 +6,6 @@ import com.xm.crypto.recommendation.model.Crypto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -17,18 +15,16 @@ import java.util.concurrent.CompletionException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
 class CSVLoaderServiceTest {
 
     private CSVLoaderService csvLoaderService;
 
-    @Value("${csv.file-name-pattern}")
-    private String fileNamePattern;
+    private static final String FILE_NAME_PATTERN = "([A-Za-z]+)_values\\.csv$";
 
     @BeforeEach
     void setUp() {
         String csvDirectory = Paths.get("src", "test", "resources").toString();
-        csvLoaderService = new CSVLoaderService(csvDirectory, fileNamePattern);
+        csvLoaderService = new CSVLoaderService(csvDirectory, FILE_NAME_PATTERN);
     }
 
     @Test
@@ -63,7 +59,7 @@ class CSVLoaderServiceTest {
     @DisplayName("An invalid name was provided for one of the input CSV files. A ValidationException should be thrown.")
     void loadAllCryptos_withInvalidFileName_shouldThrowValidationException() {
         String invalidPatternDirectory = Paths.get("src", "test", "resources", "invalid_filename").toString();
-        csvLoaderService = new CSVLoaderService(invalidPatternDirectory, fileNamePattern);
+        csvLoaderService = new CSVLoaderService(invalidPatternDirectory, FILE_NAME_PATTERN);
 
         // This should throw ValidationException because of invalid file name format
         assertThatThrownBy(() -> csvLoaderService.loadAllCryptos())
@@ -75,7 +71,7 @@ class CSVLoaderServiceTest {
     @DisplayName("One of the CSVs contained malformed data in a record. A CryptoDataMalformedException should be thrown.")
     void loadAllCryptos_withMalformedCSV_shouldThrowCryptoDataMalformedException() {
         String malformedDataDirectory = Paths.get("src", "test", "resources", "malformed").toString();
-        csvLoaderService = new CSVLoaderService(malformedDataDirectory, fileNamePattern);
+        csvLoaderService = new CSVLoaderService(malformedDataDirectory, FILE_NAME_PATTERN);
 
         assertThatThrownBy(() -> csvLoaderService.loadAllCryptos())
                 .isInstanceOf(CompletionException.class)
@@ -87,7 +83,7 @@ class CSVLoaderServiceTest {
     @DisplayName("An invalid numeric value was displayed for one of the prices contained in the input CSVs. A CryptoDataMalformedException should be thrown")
     void loadAllCryptos_withInvalidNumberFormat_shouldThrowCryptoDataMalformedException() {
         String numberFormatExceptionDirectory = Paths.get("src", "test", "resources", "invalid_numbers").toString();
-        csvLoaderService = new CSVLoaderService(numberFormatExceptionDirectory, fileNamePattern);
+        csvLoaderService = new CSVLoaderService(numberFormatExceptionDirectory, FILE_NAME_PATTERN);
 
         assertThatThrownBy(() -> csvLoaderService.loadAllCryptos())
                 .isInstanceOf(CompletionException.class)

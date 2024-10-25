@@ -1,6 +1,7 @@
 package com.xm.crypto.recommendation.service;
 
 import com.xm.crypto.recommendation.exception.ResourceNotFoundException;
+import com.xm.crypto.recommendation.exception.UnsupportedSymbolException;
 import com.xm.crypto.recommendation.model.Crypto;
 import com.xm.crypto.recommendation.model.CryptoNormalizedRange;
 import com.xm.crypto.recommendation.model.CryptoStats;
@@ -66,8 +67,8 @@ class CryptoRecommendationServiceTest {
     @DisplayName("Should throw a ResourceNotFoundException when crypto symbol is not supported.")
     void getNormalizedRangeForSymbol_withInvalidSymbol_shouldThrowException() {
         assertThatThrownBy(() -> cryptoRecommendationService.getNormalizedRangeForSymbol("DOGE"))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("No data found for symbol: DOGE");
+                .isInstanceOf(UnsupportedSymbolException.class)
+                .hasMessageContaining("Unsupported symbol DOGE");
     }
 
     @Test

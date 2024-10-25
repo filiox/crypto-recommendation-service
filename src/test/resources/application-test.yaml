@@ -1,0 +1,14 @@
+csv:
+  file-name-pattern: ^([A-Za-z]+)_values\.csv$
+  dir: csv
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+task:
+  execution:
+    pool:
+      core-size: 2
+      max-size: 10
+      queue-capacity: 10

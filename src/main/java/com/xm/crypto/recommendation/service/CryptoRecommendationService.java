@@ -1,6 +1,7 @@
 package com.xm.crypto.recommendation.service;
 
 import com.xm.crypto.recommendation.exception.ResourceNotFoundException;
+import com.xm.crypto.recommendation.exception.UnsupportedSymbolException;
 import com.xm.crypto.recommendation.model.Crypto;
 import com.xm.crypto.recommendation.model.CryptoNormalizedRange;
 import com.xm.crypto.recommendation.model.CryptoStats;
@@ -39,7 +40,7 @@ public class CryptoRecommendationService {
     public BigDecimal getNormalizedRangeForSymbol(String symbol) {
         logger.info("Getting normalized range for specified symbol: {}", symbol);
         List<Crypto> cryptoInfo = getCryptoInfo(symbol)
-                .orElseThrow(() -> new ResourceNotFoundException("No data found for symbol: " + symbol));
+                .orElseThrow(() -> new UnsupportedSymbolException(symbol));
 
         BigDecimal minPrice = cryptoInfo.stream()
                 .min(Comparator.comparing(Crypto::getPrice))
@@ -56,10 +57,25 @@ public class CryptoRecommendationService {
         return normalizedRange;
     }
 
+    public BigDecimal getNormalizedRangeForCryptoInfo(List<Crypto> cryptoInfo) {
+        BigDecimal minPrice = cryptoInfo.stream()
+                .min(Comparator.comparing(Crypto::getPrice))
+                .orElseThrow(() -> new ResourceNotFoundException("No minimum price found"))
+                .getPrice();
+
+        BigDecimal maxPrice = cryptoInfo.stream()
+                .max(Comparator.comparing(Crypto::getPrice))
+                .orElseThrow(() -> new ResourceNotFoundException("No maximum price found"))
+                .getPrice();
+
+        BigDecimal normalizedRange = (maxPrice.subtract(minPrice)).divide(minPrice, RoundingMode.HALF_UP);
+        return normalizedRange;
+    }
+
     public CryptoStats getCryptoStatsForSymbolAndDateRange(String symbol, DateRange dateRange) {
         logger.info("Getting crypto statistics for symbol {} and date range: {}", symbol, dateRange);
         List<Crypto> cryptoInfo = getCryptoInfo(symbol)
-                .orElseThrow(() -> new ResourceNotFoundException("No data found for symbol: " + symbol));
+                .orElseThrow(() -> new UnsupportedSymbolException(symbol));
 
         List<Crypto> filteredCryptoInfo = cryptoInfo.stream()
                 .filter(crypto -> !crypto.getTimestamp().toLocalDate().isBefore(dateRange.getStart())
@@ -77,7 +93,7 @@ public class CryptoRecommendationService {
     public CryptoStats getCryptoStatsForSymbol(String symbol) {
         logger.info("Getting crypto statistics for symbol: {}", symbol);
         List<Crypto> cryptoInfo = getCryptoInfo(symbol)
-                .orElseThrow(() -> new ResourceNotFoundException("No data found for symbol: " + symbol));
+                .orElseThrow(() -> new UnsupportedSymbolException(symbol));
 
         return getCryptoStats(cryptoInfo);
     }
@@ -94,7 +110,7 @@ public class CryptoRecommendationService {
         logger.info("Retrieving highest normalized range for date: {}", targetDate);
         return getAllCryptoInfoForDate(targetDate).entrySet().stream()
                 .filter(entry -> !entry.getValue().isEmpty())
-                .map(entry -> new CryptoNormalizedRange(entry.getKey(), getNormalizedRangeForSymbol(entry.getKey())))
+                .map(entry -> new CryptoNormalizedRange(entry.getKey(), getNormalizedRangeForCryptoInfo(entry.getValue())))
                 .max(Comparator.comparing(CryptoNormalizedRange::getNormalizedRange))
                 .orElseThrow(() -> new ResourceNotFoundException("No cryptocurrencies found with valid data for the date: " + targetDate));
     }

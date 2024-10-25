@@ -88,11 +88,11 @@ class IntegrationTests {
 
 	@Test
 	@DisplayName("Should Handle Invalid Symbol for Crypto Stats")
-	void getCryptoStats_InvalidSymbol_ShouldHandleInvalidSymbol()  throws Exception {
+	void getCryptoStats_InvalidSymbol_ShouldHandleInvalidSymbol() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/BTCC/stats"))
-				.andExpect(MockMvcResultMatchers.status().isNotFound())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Not Found"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("No data found for symbol: BTCC"));
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errorType").value("Bad Request"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage").value("Unsupported symbol BTCC"));
 	}
 
 	@Test
@@ -118,8 +118,8 @@ class IntegrationTests {
 	void getHighestNormalizedRange_ShouldReturnHighestNormalizedRange() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/cryptos/highest-normalized-range/2022-01-01"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.jsonPath("$.symbol").value("ETH"))
-				.andExpect(MockMvcResultMatchers.jsonPath("$.normalizedRange").value("0.64"));
+				.andExpect(MockMvcResultMatchers.jsonPath("$.symbol").value("XRP"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.normalizedRange").value("0.0193"));
 	}
 
 }
