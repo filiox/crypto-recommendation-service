@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.validator;
+package com.xm.crypto.recommendation.utils;
 
 import com.xm.crypto.recommendation.exception.ValidationException;
 import com.xm.crypto.recommendation.model.DateRange;

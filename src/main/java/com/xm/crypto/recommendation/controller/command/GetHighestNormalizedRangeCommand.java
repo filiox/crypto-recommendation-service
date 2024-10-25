@@ -4,7 +4,7 @@ import com.xm.crypto.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.crypto.recommendation.model.CryptoNormalizedRange;
 import com.xm.crypto.recommendation.model.Request;
 import com.xm.crypto.recommendation.service.CryptoRecommendationService;
-import com.xm.crypto.recommendation.validator.DateUtils;
+import com.xm.crypto.recommendation.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
