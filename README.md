@@ -23,6 +23,8 @@ For deploying this to Kubernetes, you can execute the `deploy.sh` script that ca
 
 Before running this script, make sure you are logged in to Docker, and you have installed the pre-requisites.
 
+deploy.sh <username>
+
 - **Exposed endpoint:** [http://localhost:30000](http://localhost:30000)
 
 ## Additional Links
