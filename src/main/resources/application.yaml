@@ -6,7 +6,7 @@ spring:
   mvc:
     static-path-pattern: /static/**0
 server:
-  port: 8080
+  port: 8081
 csv:
   file-name-pattern: ^([A-Za-z]+)_values\.csv$
   dir: csv

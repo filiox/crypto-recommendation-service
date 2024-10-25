@@ -33,7 +33,7 @@ class CSVLoaderServiceTest {
 
     @Test
     @DisplayName("Load successfully all crypto data from CSV files.")
-    void loadAllCryptos_shouldLoadDataFromCSVFiles() {
+    void loadAllCryptos_withValidFiles_shouldLoadDataFromCSVFiles()  {
         Map<String, List<Crypto>> cryptoData = csvLoaderService.loadAllCryptos();
 
         assertThat(cryptoData).hasSize(5);
@@ -61,7 +61,7 @@ class CSVLoaderServiceTest {
 
     @Test
     @DisplayName("An invalid name was provided for one of the input CSV files. A ValidationException should be thrown.")
-    void loadAllCryptos_shouldThrowValidationExceptionForInvalidFileName() {
+    void loadAllCryptos_withInvalidFileName_shouldThrowValidationException() {
         String invalidPatternDirectory = Paths.get("src", "test", "resources", "invalid_filename").toString();
         csvLoaderService = new CSVLoaderService(invalidPatternDirectory, fileNamePattern);
 
@@ -73,7 +73,7 @@ class CSVLoaderServiceTest {
 
     @Test
     @DisplayName("One of the CSVs contained malformed data in a record. A CryptoDataMalformedException should be thrown.")
-    void loadAllCryptos_shouldThrowCryptoDataMalformedExceptionForMalformedCSV() {
+    void loadAllCryptos_withMalformedCSV_shouldThrowCryptoDataMalformedException() {
         String malformedDataDirectory = Paths.get("src", "test", "resources", "malformed").toString();
         csvLoaderService = new CSVLoaderService(malformedDataDirectory, fileNamePattern);
 
@@ -85,7 +85,7 @@ class CSVLoaderServiceTest {
 
     @Test
     @DisplayName("An invalid numeric value was displayed for one of the prices contained in the input CSVs. A CryptoDataMalformedException should be thrown")
-    void loadAllCryptos_shouldThrowCryptoDataMalformedExceptionForNumberFormatException() {
+    void loadAllCryptos_withInvalidNumberFormat_shouldThrowCryptoDataMalformedException() {
         String numberFormatExceptionDirectory = Paths.get("src", "test", "resources", "invalid_numbers").toString();
         csvLoaderService = new CSVLoaderService(numberFormatExceptionDirectory, fileNamePattern);
 

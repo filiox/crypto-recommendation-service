@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 public class CryptoRecommendationService {
 
     private static final Logger logger = LoggerFactory.getLogger(CryptoRecommendationService.class);
@@ -24,6 +26,7 @@ public class CryptoRecommendationService {
 
     public CryptoRecommendationService(CSVLoaderService csvLoaderService) {
         logger.info("Initializing CryptoRecommendationService...");
+        requireNonNull(csvLoaderService, "csvLoaderService must not be null");
         this.cryptoData = csvLoaderService.loadAllCryptos();
         logger.info("CryptoRecommendationService initialized successfully.");
     }

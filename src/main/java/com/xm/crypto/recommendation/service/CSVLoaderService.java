@@ -29,6 +29,7 @@ import java.util.stream.StreamSupport;
 public class CSVLoaderService {
 
     private static final Logger logger = LoggerFactory.getLogger(CSVLoaderService.class);
+
     private final String csvDirectory;
     private final Pattern fileNamePattern;
 

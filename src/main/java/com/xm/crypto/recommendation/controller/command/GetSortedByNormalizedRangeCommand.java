@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.requireNonNull;
+
 public class GetSortedByNormalizedRangeCommand implements Command<Request, List<CryptoNormalizedRangeDto>> {
 
     private static final Logger logger = LoggerFactory.getLogger(GetSortedByNormalizedRangeCommand.class);
@@ -17,27 +19,23 @@ public class GetSortedByNormalizedRangeCommand implements Command<Request, List<
     private final CryptoRecommendationService cryptoRecommendationService;
 
     public GetSortedByNormalizedRangeCommand(CryptoRecommendationService cryptoRecommendationService) {
-        this.cryptoRecommendationService = cryptoRecommendationService;
+        this.cryptoRecommendationService = requireNonNull(cryptoRecommendationService, "cryptoRecommendationService is required");
     }
 
     @Override
     public List<CryptoNormalizedRangeDto> execute(Request requestDto) {
         logger.info("Getting normalized range for each crypto in descending order.");
-        List<CryptoNormalizedRangeDto> result = cryptoRecommendationService.getSortedByNormalizedRange()
+        return cryptoRecommendationService.getSortedByNormalizedRange()
                 .stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
-        logger.info("Successfully retrieved normalized range for each crypto in descending order.");
-        return result;
     }
 
     private CryptoNormalizedRangeDto toDto(CryptoNormalizedRange cryptoNormalizedRange){
         logger.debug("Converting CryptoNormalizedRange to CryptoNormalizedRangeDto for symbol: {}", cryptoNormalizedRange.getSymbol());
         CryptoNormalizedRangeDto cryptoNormalizedRangeDto = new CryptoNormalizedRangeDto();
-        cryptoNormalizedRangeDto
+        return cryptoNormalizedRangeDto
                 .normalizedRange(cryptoNormalizedRange.getNormalizedRange())
                 .symbol(cryptoNormalizedRange.getSymbol());
-        logger.debug("Successfully converted CryptoNormalizedRange to CryptoNormalizedRangeDto for symbol: {}", cryptoNormalizedRange.getSymbol());
-        return cryptoNormalizedRangeDto;
     }
 }

@@ -8,6 +8,8 @@ import com.xm.crypto.recommendation.validator.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.util.Objects.requireNonNull;
+
 public class GetCryptoStatsCommand implements Command<Request, CryptoStatsDto> {
 
     private static final Logger logger = LoggerFactory.getLogger(GetCryptoStatsCommand.class);
@@ -15,7 +17,7 @@ public class GetCryptoStatsCommand implements Command<Request, CryptoStatsDto> {
     private final CryptoRecommendationService cryptoRecommendationService;
 
     public GetCryptoStatsCommand(CryptoRecommendationService cryptoRecommendationService) {
-        this.cryptoRecommendationService = cryptoRecommendationService;
+        this.cryptoRecommendationService = requireNonNull(cryptoRecommendationService, "cryptoRecommendationService must not be null");
     }
 
     @Override
@@ -23,7 +25,7 @@ public class GetCryptoStatsCommand implements Command<Request, CryptoStatsDto> {
         logger.info("Getting crypto statistics for symbol: {}", request.getSymbol());
         CryptoStatsDto result = toDto(DateUtils.getTimeRangeFromString(request.getStartDate(), request.getEndDate())
                 .map(dateRange -> {
-                    logger.debug("Date range provided: {} to {}", request.getStartDate(), request.getEndDate());
+                    logger.debug("Will retrieve stats for provided date range: {} to {}", request.getStartDate(), request.getEndDate());
                     return cryptoRecommendationService.getCryptoStatsForSymbolAndDateRange(request.getSymbol(), dateRange);
                 })
                 .orElseGet(() -> {

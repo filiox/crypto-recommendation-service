@@ -4,13 +4,14 @@ import com.xm.crypto.recommendation.api.CryptoRecommendationApiDelegate;
 import com.xm.crypto.recommendation.controller.command.GetSortedByNormalizedRangeCommand;
 import com.xm.crypto.recommendation.controller.command.GetCryptoStatsCommand;
 import com.xm.crypto.recommendation.controller.command.GetHighestNormalizedRangeCommand;
-import com.xm.crypto.recommendation.dto.CryptoHighestNormalizedRangeDto;
 import com.xm.crypto.recommendation.dto.CryptoNormalizedRangeDto;
 import com.xm.crypto.recommendation.dto.CryptoStatsDto;
 import com.xm.crypto.recommendation.model.Request;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 public class CryptoRecommendationDelegate implements CryptoRecommendationApiDelegate {
 
@@ -19,9 +20,9 @@ public class CryptoRecommendationDelegate implements CryptoRecommendationApiDele
     private final GetSortedByNormalizedRangeCommand getSortedByNormalizedRangeCommand;
 
     public CryptoRecommendationDelegate(GetHighestNormalizedRangeCommand getHighestNormalizedRangeCommand, GetCryptoStatsCommand getCryptoStatsCommand, GetSortedByNormalizedRangeCommand getSortedByNormalizedRangeCommand) {
-        this.getHighestNormalizedRangeCommand = getHighestNormalizedRangeCommand;
-        this.getCryptoStatsCommand = getCryptoStatsCommand;
-        this.getSortedByNormalizedRangeCommand = getSortedByNormalizedRangeCommand;
+        this.getHighestNormalizedRangeCommand = requireNonNull(getHighestNormalizedRangeCommand, "getHighestNormalizedRangeCommand must not be null");
+        this.getCryptoStatsCommand = requireNonNull(getCryptoStatsCommand, "getCryptoStatsCommand must not be null");
+        this.getSortedByNormalizedRangeCommand = requireNonNull(getSortedByNormalizedRangeCommand, "getSortedByNormalizedRangeCommand must not be null");
     }
 
     @Override
@@ -36,7 +37,7 @@ public class CryptoRecommendationDelegate implements CryptoRecommendationApiDele
     }
 
     @Override
-    public ResponseEntity<CryptoHighestNormalizedRangeDto> getHighestNormalizedRange(String date){
+    public ResponseEntity<CryptoNormalizedRangeDto> getHighestNormalizedRange(String date){
         return ResponseEntity.ok(getHighestNormalizedRangeCommand.execute(Request.builder()
                 .forDate(date)
                 .build()));

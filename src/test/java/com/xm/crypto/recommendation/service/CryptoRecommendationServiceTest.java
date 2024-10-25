@@ -5,6 +5,7 @@ import com.xm.crypto.recommendation.model.Crypto;
 import com.xm.crypto.recommendation.model.CryptoNormalizedRange;
 import com.xm.crypto.recommendation.model.CryptoStats;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -52,7 +53,8 @@ class CryptoRecommendationServiceTest {
     }
 
     @Test
-    void getNormalizedRangeForSymbol_shouldReturnCorrectRange() {
+    @DisplayName("Should return correct normalized range for a valid crypto symbol")
+    void getNormalizedRangeForSymbol_withValidSymbol_shouldReturnCorrectRange() {
         BigDecimal normalizedRange = cryptoRecommendationService.getNormalizedRangeForSymbol("BTC");
 
         assertThat(normalizedRange)
@@ -61,14 +63,16 @@ class CryptoRecommendationServiceTest {
     }
 
     @Test
-    void getNormalizedRangeForSymbol_shouldThrowExceptionWhenSymbolNotFound() {
+    @DisplayName("Should throw a ResourceNotFoundException when crypto symbol is not supported.")
+    void getNormalizedRangeForSymbol_withInvalidSymbol_shouldThrowException() {
         assertThatThrownBy(() -> cryptoRecommendationService.getNormalizedRangeForSymbol("DOGE"))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("No data found for symbol: DOGE");
     }
 
     @Test
-    void getCryptoStatsForSymbol_shouldReturnCorrectStats() {
+    @DisplayName("Should return the correct stats for a valid crypto symbol")
+    void getCryptoStatsForSymbol_withValidSymbol_shouldReturnCorrectStats() {
         CryptoStats stats = cryptoRecommendationService.getCryptoStatsForSymbol("BTC");
 
         assertThat(stats).isNotNull();
@@ -79,7 +83,8 @@ class CryptoRecommendationServiceTest {
     }
 
     @Test
-    void getSortedByNormalizedRangedForAllCryptos_shouldReturnSortedCryptos() {
+    @DisplayName("Should return sorted cryptos by normalized range(descending order) when data is available")
+    void getSortedByNormalizedRangedForAllCryptos_withData_shouldReturnSortedCryptos() {
         List<CryptoNormalizedRange> sortedRanges = cryptoRecommendationService.getSortedByNormalizedRange();
 
         assertThat(sortedRanges)
@@ -93,7 +98,8 @@ class CryptoRecommendationServiceTest {
     }
 
     @Test
-    void getCryptoHighestNormalizedRangeForDate_shouldReturnHighestNormalizedRange() {
+    @DisplayName("Should return the highest normalized range for a valid date")
+    void getCryptoHighestNormalizedRangeForDate_withValidDate_shouldReturnHighestNormalizedRange() {
         CryptoNormalizedRange highestNormalizedRange = cryptoRecommendationService.getHighestNormalizedRangeForDate(LocalDate.of(2022, 1, 1));
 
         assertThat(highestNormalizedRange).isNotNull();
@@ -102,7 +108,8 @@ class CryptoRecommendationServiceTest {
     }
 
     @Test
-    void getCryptoHighestNormalizedRangeForDate_shouldThrowExceptionWhenNoDataForDate() {
+    @DisplayName("Should throw a ResourceNotFoundException when no data are available for the given date")
+    void getCryptoHighestNormalizedRangeForDate_withInvalidDate_shouldThrowException() {
         assertThatThrownBy(() -> cryptoRecommendationService.getHighestNormalizedRangeForDate(LocalDate.of(2025, 1, 1)))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("No cryptocurrencies found with valid data for the date");

@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy the compiled JAR file to the container
 COPY build/libs/crypto-recommendation-service-0.0.1-SNAPSHOT.jar /app/crypto-recommendation-service.jar
-COPY /csv /csv
+COPY /csv /app/csv
 
 # Set the entry point to run the JAR file
 ENTRYPOINT ["java", "-jar", "/app/crypto-recommendation-service.jar"]

@@ -25,13 +25,3 @@ components:
         max:
           type: number
           description: The maximum price recorded.
-
-    CryptoHighestNormalizedRange:
-      type: object
-      properties:
-        symbol:
-          type: string
-          description: The symbol of the cryptocurrency with the highest normalized range.
-        normalizedRange:
-          type: number
-          description: The highest normalized range value.

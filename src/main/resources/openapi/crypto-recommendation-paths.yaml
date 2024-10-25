@@ -87,7 +87,7 @@ operations:
           content:
             application/json:
               schema:
-                $ref: 'crypto-recommendation-schema.yaml#/components/schemas/CryptoHighestNormalizedRange'
+                $ref: 'crypto-recommendation-schema.yaml#/components/schemas/CryptoNormalizedRange'
         '500':
           $ref: 'commons.yaml#/errors/internal-server-error'
         '400':
