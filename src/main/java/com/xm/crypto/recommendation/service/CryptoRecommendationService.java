@@ -52,9 +52,7 @@ public class CryptoRecommendationService {
                 .orElseThrow(() -> new ResourceNotFoundException("No maximum price found"))
                 .getPrice();
 
-        BigDecimal normalizedRange = (maxPrice.subtract(minPrice)).divide(minPrice, RoundingMode.HALF_UP);
-        logger.info("Normalized range for symbol {}: {}", symbol, normalizedRange);
-        return normalizedRange;
+        return (maxPrice.subtract(minPrice)).divide(minPrice, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getNormalizedRangeForCryptoInfo(List<Crypto> cryptoInfo) {
@@ -68,8 +66,7 @@ public class CryptoRecommendationService {
                 .orElseThrow(() -> new ResourceNotFoundException("No maximum price found"))
                 .getPrice();
 
-        BigDecimal normalizedRange = (maxPrice.subtract(minPrice)).divide(minPrice, RoundingMode.HALF_UP);
-        return normalizedRange;
+        return (maxPrice.subtract(minPrice)).divide(minPrice, RoundingMode.HALF_UP);
     }
 
     public CryptoStats getCryptoStatsForSymbolAndDateRange(String symbol, DateRange dateRange) {
